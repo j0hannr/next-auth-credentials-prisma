@@ -19,6 +19,7 @@ function UserProfile() {
   // }
 
   async function changePasswordHandler(passwordData) {
+    console.log("change password: call api endpoint", passwordData)
     const response = await fetch('/api/user/change-password', {
       method: 'PATCH',
       body: JSON.stringify(passwordData),
@@ -28,7 +29,6 @@ function UserProfile() {
     });
 
     const data = await response.json();
-
     console.log(data);
   }
 

@@ -12,6 +12,11 @@ function ProfileForm(props) {
     const enteredOldPassword = oldPasswordRef.current.value;
     const enteredNewPassword = newPasswordRef.current.value;
 
+    console.log('start change password', {
+      oldPassword: enteredOldPassword,
+      newPassword: enteredNewPassword
+    });
+
     // optional: Add validation
 
     props.onChangePassword({
@@ -31,7 +36,7 @@ function ProfileForm(props) {
         <input type='password' id='old-password' ref={oldPasswordRef} />
       </div>
       <div className={classes.action}>
-        <button>Change Password</button>
+        <button type="submit"  >Change Password</button>
       </div>
     </form>
   );

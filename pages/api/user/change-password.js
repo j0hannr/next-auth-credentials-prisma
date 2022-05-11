@@ -12,12 +12,19 @@ import { connectToDatabase } from '../../../lib/db';
  * 
  */
 
-async function handler(req, res) {
+ export default async function prismaAuthHandler(req, res) {
+
+  console.log('reset password');
+
+  const session = await getSession({ req: req });
+
+  console.log('getSession', session);
+
   if (req.method !== 'PATCH') {
     return;
   }
 
-  const session = await getSession({ req: req });
+  // const session = await getSession({ req: req });
 
   if (!session) {
     res.status(401).json({ message: 'Not authenticated!' });
@@ -44,7 +51,7 @@ async function handler(req, res) {
   // check if user exists
   if (!user) {
     res.status(404).json({ message: 'User not found.' });
-    client.close();
+    // client.close();
     return;
   }
 
@@ -56,7 +63,7 @@ async function handler(req, res) {
   // return error if passwords don't match
   if (!passwordsAreEqual) {
     res.status(403).json({ message: 'Invalid password.' });
-    client.close();
+    // client.close();
     return;
   }
 
@@ -79,8 +86,8 @@ async function handler(req, res) {
     },
   });
 
-  client.close(); // for mongoDB
+  // client.close(); // for mongoDB
   res.status(200).json({ message: 'Password updated!' });
 }
 
-export default handler;
+// export default handler;

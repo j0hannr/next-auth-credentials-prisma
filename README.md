@@ -1,11 +1,16 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
+# NextAuth Credentials Authentication with Prisma
 ## Todo
 - [x] Work with Prisma
 - [x] Update NextAuth
-- [ ] Password Change Function
+- [x] Update Nextjs
+- [ ] Remove MongoDB code
+- [ ] Auto login after registration
+- [x] Password Change Function
 - [ ] Password Reset Function with Nodemailer
 - [ ] Login/Register Form Feedback
+
+## Error
+`getSession` returns null on .env variable `NEXTAUTH_URL=http://localhost:3003`
 
 ## Getting Started
 
@@ -14,7 +19,7 @@ First, run the development server:
 ```bash
 npm run dev
 # or
-yarn dev
+npm run dev -- -p 3003
 ```
 
 ## Prisma Setup
@@ -24,6 +29,7 @@ yarn dev
 4. `npx prisma generate`
 5. `npx prisma migrate dev`
 
+## Development
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
@@ -40,9 +46,3 @@ To learn more about Next.js, take a look at the following resources:
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.

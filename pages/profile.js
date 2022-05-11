@@ -12,6 +12,10 @@ export default function Profile() {
   const loading = status === "loading";
 
   useEffect(() => {
+    console.log('session', session);
+  }, [session]);
+  
+  useEffect(() => {
     if (!loading && !session) {
       router.push("/");
     }
@@ -21,6 +25,11 @@ export default function Profile() {
     return <p />;
   }
 
+  if (session) {
+    console.log('session', session);
+  }
+
+  console.log('session', session);
   return <UserProfile />;
 
 }
