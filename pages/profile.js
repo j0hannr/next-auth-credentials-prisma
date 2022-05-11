@@ -1,4 +1,5 @@
 import { getSession } from 'next-auth/client';
+// import { signIn, signOut, useSession } from "next-auth/react";
 
 import UserProfile from '../components/profile/user-profile';
 
@@ -8,6 +9,7 @@ function ProfilePage() {
 
 export async function getServerSideProps(context) {
   const session = await getSession({ req: context.req });
+  // const { data: session, status } = useSession();
 
   if (!session) {
     return {

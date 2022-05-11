@@ -1,0 +1,41 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                  String        @id @default(cuid())
+  name                String?                                 // By nextAuth
+  firstName           String?
+  lastName            String?
+  email               String?       @unique
+  emailVerified       DateTime?                               // By nextAuth
+  image               String?                                 // By nextAuth
+  telefon             String?
+  newsletter          Boolean?      @default(false)
+  newsletterProperty  Boolean?      @default(false)
+  welcomeStatus       Boolean?      @default(false)           // welcome banner indikator
+  agbAccepted         DateTime?
+  personalCode        String?                                 // AuthCode used to connect registed Buildings to user
+  public              Boolean       @default(false)           // Public User used by Organizations
+  verified            Boolean       @default(false)
+  isAdmin             Boolean?      @default(false)           // Admin Access to Admin Panel and Privilages
+  createdAt           DateTime      @default(now()) 
+  updatedAt           DateTime      @default(now()) @updatedAt
+  password            String? 
+
+  // User Postal Address
+  street              String?
+  streetNumber        String?
+  city                String?    
+  postcode            String?
+  region              String?
+  country             String?
+}

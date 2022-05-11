@@ -1,8 +1,18 @@
 import NextAuth from 'next-auth';
 import Providers from 'next-auth/providers';
-
 import { verifyPassword } from '../../../lib/auth';
 import { connectToDatabase } from '../../../lib/db';
+import prisma from '../../../lib/prisma';
+
+/**
+ * 
+ * Todo
+ * ---
+ * - Add Prisma
+ * - Add Prisma Schema
+ * - Get User by email
+ * 
+ */
 
 export default NextAuth({
   session: {
@@ -11,30 +21,38 @@ export default NextAuth({
   providers: [
     Providers.Credentials({
       async authorize(credentials) {
-        const client = await connectToDatabase();
 
-        const usersCollection = client.db().collection('users');
+        // mangoDB get user by mail
+        // const client = await connectToDatabase();
+        // const usersCollection = client.db().collection('users');
+        // const user = await usersCollection.findOne({
+        //   email: credentials.email,
+        // });
 
-        const user = await usersCollection.findOne({
-          email: credentials.email,
+        // prisma get user by mail
+        const user = await prisma.user.findUnique({
+          where: {
+            email: credentials.email,
+          },
         });
 
         if (!user) {
-          client.close();
+          // client.close(); // for mongoDB
           throw new Error('No user found!');
         }
 
+        // compare given password with hashed password from database
         const isValid = await verifyPassword(
           credentials.password,
           user.password
         );
 
         if (!isValid) {
-          client.close();
+          // client.close(); // for mongoDB
           throw new Error('Could not log you in!');
         }
 
-        client.close();
+        // client.close(); // for mongoDB
         return { email: user.email };
         
       },
