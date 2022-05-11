@@ -4,7 +4,7 @@
 - [x] Update NextAuth
 - [x] Update Nextjs
 - [ ] Remove MongoDB code
-- [ ] Auto login after registration
+- [x] Auto login after registration
 - [x] Password Change Function
 - [ ] Password Reset Function with Nodemailer
 - [ ] Login/Register Form Feedback

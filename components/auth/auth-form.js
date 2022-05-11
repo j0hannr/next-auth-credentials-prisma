@@ -20,6 +20,14 @@ async function createUser(email, password) {
     throw new Error(data.message || 'Something went wrong!');
   }
 
+  // login after signup
+  const result = await signIn('credentials', {
+    redirect: false,
+    email: email,
+    password: password,
+  });
+
+  // console.log("signup",data)
   return data;
 }
 
