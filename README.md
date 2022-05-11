@@ -3,7 +3,7 @@
 - [x] Work with Prisma
 - [x] Update NextAuth
 - [x] Update Nextjs
-- [ ] Remove MongoDB code
+- [x] Remove MongoDB code
 - [x] Auto login after registration
 - [x] Password Change Function
 - [ ] Password Reset Function with Nodemailer

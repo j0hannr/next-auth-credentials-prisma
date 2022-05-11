@@ -1,30 +1,13 @@
 import { getSession } from "next-auth/react";
 import { hashPassword, verifyPassword } from '../../../lib/auth';
-import { connectToDatabase } from '../../../lib/db';
-
-/**
- * 
- * change password endpoint
- * ---
- * - Add Prisma
- * - Add Prisma Schema
- * - Get User by email
- * 
- */
 
  export default async function prismaAuthHandler(req, res) {
 
-  console.log('reset password');
-
   const session = await getSession({ req: req });
-
-  console.log('getSession', session);
 
   if (req.method !== 'PATCH') {
     return;
   }
-
-  // const session = await getSession({ req: req });
 
   if (!session) {
     res.status(401).json({ message: 'Not authenticated!' });
@@ -36,11 +19,6 @@ import { connectToDatabase } from '../../../lib/db';
   const oldPassword = req.body.oldPassword;
   const newPassword = req.body.newPassword;
 
-  // mangoDB connection
-  // const client = await connectToDatabase();
-  // const usersCollection = client.db().collection('users');
-  // get user by email
-  // const user = await usersCollection.findOne({ email: userEmail });
   // prisma get user by email
   const user = await prisma.user.findUnique({
     where: {
@@ -51,7 +29,6 @@ import { connectToDatabase } from '../../../lib/db';
   // check if user exists
   if (!user) {
     res.status(404).json({ message: 'User not found.' });
-    // client.close();
     return;
   }
 
@@ -63,18 +40,11 @@ import { connectToDatabase } from '../../../lib/db';
   // return error if passwords don't match
   if (!passwordsAreEqual) {
     res.status(403).json({ message: 'Invalid password.' });
-    // client.close();
     return;
   }
 
   // hash new password
   const hashedPassword = await hashPassword(newPassword);
-
-  // update user password
-  // const result = await usersCollection.updateOne(
-  //   { email: userEmail },
-  //   { $set: { password: hashedPassword } }
-  // );
 
   // prisma update user password
   const result = await prisma.user.update({
@@ -86,8 +56,5 @@ import { connectToDatabase } from '../../../lib/db';
     },
   });
 
-  // client.close(); // for mongoDB
   res.status(200).json({ message: 'Password updated!' });
 }
-
-// export default handler;

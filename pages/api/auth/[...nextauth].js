@@ -1,20 +1,8 @@
 import NextAuth from "next-auth";
-// import Providers from 'next-auth/providers';
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { verifyPassword } from "../../../lib/auth";
-// import { connectToDatabase } from '../../../lib/db';
 import prisma from "../../../lib/prisma";
-
-/**
- *
- * Todo
- * ---
- * - Add Prisma
- * - Add Prisma Schema
- * - Get User by email
- *
- */
 
 export default async function auth(req, res) {
   return await NextAuth(req, res, {
@@ -32,12 +20,6 @@ export default async function auth(req, res) {
           password: { label: "Password", type: "password" },
         },
         async authorize(credentials) {
-          // mangoDB get user by mail
-          // const client = await connectToDatabase();
-          // const usersCollection = client.db().collection('users');
-          // const user = await usersCollection.findOne({
-          //   email: credentials.email,
-          // });
 
           // prisma get user by mail
           const user = await prisma.user.findUnique({
@@ -47,7 +29,6 @@ export default async function auth(req, res) {
           });
 
           if (!user) {
-            // client.close(); // for mongoDB
             throw new Error("No user found!");
           }
 
@@ -55,42 +36,38 @@ export default async function auth(req, res) {
           const isValid = await verifyPassword(credentials.password, user.password);
 
           if (!isValid) {
-            // client.close(); // for mongoDB
             throw new Error("Could not log you in!");
           }
+          console.log("user id", user.id)
+          if (user) {
+            // Any object returned will be saved in `user` property of the JWT
+            return { email: user.email, name: user.name }
+          } else {
+            // If you return null then an error will be displayed advising the user to check their details.
+            return null
+          }
 
-          console.log("logging in");
-          // client.close(); // for mongoDB
-          return { email: user.email, name: "JJ" };
 
-          // const userx = { id: 1, name: "J Smith", email: "jsmith@example.com" }
-          // return userx
         },
       }),
     ],
-    callbacks: {
-      //   jwt callback is only called when token is created
-      jwt: async ({ token, user }) => {
-        // user is obj that we have received from authorize Promise.resolve(user)
-        user && (token.user = user);
-        // not this token has user property
-        return Promise.resolve(token);
-      },
-      // user arg here is actully token that returned from jwt.
-      session: async ({ session, token }) => {
-        // session callback is called whenever a session for that particular user is checked
-        console.log("user in ...next auth api", token);
-        session.user = token.user;
-        // since I get error, I return Promise.resolve(session)
-        return Promise.resolve(session);
-      },
-    },
     secret: process.env.SECRET,
-    // session: {
-    //   jwt: true,
-    // },
     session: {
+      jwt: true,
+      // Choose how you want to save the user session.
+      // The default is `"jwt"`, an encrypted JWT (JWE) stored in the session cookie.
+      // If you use an `adapter` however, we default it to `"database"` instead.
+      // You can still force a JWT session by explicitly defining `"jwt"`.
+      // When using `"database"`, the session cookie will only contain a `sessionToken` value,
+      // which is used to look up the session in the database.
       strategy: "jwt",
+      // Seconds - How long until an idle session expires and is no longer valid.
+      maxAge: 30 * 24 * 60 * 60, // 30 days * 2
+
+      // Seconds - Throttle how frequently to write to database to extend a session.
+      // Use it to limit write operations. Set to 0 to always update the database.
+      // Note: This option is ignored if using JSON Web Tokens
+      updateAge: 24 * 60 * 60, // 24 hours
     },
     debug: true,
   });

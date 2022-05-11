@@ -1,6 +1,4 @@
-// import { getSession } from 'next-auth/client';
 import { signIn, signOut, useSession } from "next-auth/react";
-// import { getSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import UserProfile from '../components/profile/user-profile';
