@@ -1,5 +1,12 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## Todo
+- [x] Work with Prisma
+- [x] Update NextAuth
+- [ ] Password Change Function
+- [ ] Password Reset Function with Nodemailer
+- [ ] Login/Register Form Feedback
+
 ## Getting Started
 
 First, run the development server:
@@ -9,6 +16,13 @@ npm run dev
 # or
 yarn dev
 ```
+
+## Prisma Setup
+1. `npm install next-auth@beta @prisma/client @next-auth/prisma-adapter@next`
+2. `npm install prisma --save-dev`
+3. `npx prisma migrate dev`
+4. `npx prisma generate`
+5. `npx prisma migrate dev`
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 

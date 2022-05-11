@@ -1,11 +1,11 @@
 import { useState, useRef } from 'react';
-import { signIn } from 'next-auth/client';
+import { signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from 'next/router';
 
 import classes from './auth-form.module.css';
 
 async function createUser(email, password) {
-  
+
   const response = await fetch('/api/auth/signup', {
     method: 'POST',
     body: JSON.stringify({ email, password }),

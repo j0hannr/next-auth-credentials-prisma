@@ -1,15 +1,15 @@
-import { Provider } from 'next-auth/client';
+import { SessionProvider } from "next-auth/react"
 
 import Layout from '../components/layout/layout';
 import '../styles/globals.css';
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
-    <Provider session={pageProps.session}>
+    <SessionProvider session={session}>
       <Layout>
         <Component {...pageProps} />
       </Layout>
-    </Provider>
+    </SessionProvider>
   );
 }
 

@@ -1,5 +1,4 @@
-import { getSession } from 'next-auth/client';
-
+import { getSession } from "next-auth/react";
 import { hashPassword, verifyPassword } from '../../../lib/auth';
 import { connectToDatabase } from '../../../lib/db';
 
@@ -31,16 +30,16 @@ async function handler(req, res) {
   const newPassword = req.body.newPassword;
 
   // mangoDB connection
-  const client = await connectToDatabase();
-  const usersCollection = client.db().collection('users');
+  // const client = await connectToDatabase();
+  // const usersCollection = client.db().collection('users');
   // get user by email
-  const user = await usersCollection.findOne({ email: userEmail });
+  // const user = await usersCollection.findOne({ email: userEmail });
   // prisma get user by email
-  // const user = await prisma.user.findOne({
-  //   where: {
-  //     email: userEmail,
-  //   },
-  // });
+  const user = await prisma.user.findUnique({
+    where: {
+      email: userEmail,
+    },
+  });
 
   // check if user exists
   if (!user) {
@@ -65,20 +64,20 @@ async function handler(req, res) {
   const hashedPassword = await hashPassword(newPassword);
 
   // update user password
-  const result = await usersCollection.updateOne(
-    { email: userEmail },
-    { $set: { password: hashedPassword } }
-  );
+  // const result = await usersCollection.updateOne(
+  //   { email: userEmail },
+  //   { $set: { password: hashedPassword } }
+  // );
 
   // prisma update user password
-  // const result = await prisma.user.update({
-  //   where: {
-  //     email: userEmail,
-  //   },
-  //   data: {
-  //     password: hashedPassword,
-  //   },
-  // });
+  const result = await prisma.user.update({
+    where: {
+      email: userEmail,
+    },
+    data: {
+      password: hashedPassword,
+    },
+  });
 
   client.close(); // for mongoDB
   res.status(200).json({ message: 'Password updated!' });
