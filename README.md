@@ -12,6 +12,10 @@
 ## Error
 `getSession` returns null on .env variable `NEXTAUTH_URL=http://localhost:3003`
 
+## Solution
+https://stackoverflow.com/questions/69538112/getsession-next-auth-returns-null
+https://next-auth.js.org/v3/configuration/options#nextauth_url_internal
+
 ## Getting Started
 
 First, run the development server:
